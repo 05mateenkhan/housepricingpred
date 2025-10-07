@@ -1,33 +1,41 @@
-services:
-  - type: web
-    name: flask-docker-cicd-app
-    env: docker
-    plan: free
-    region: singapore
-    autoDeploy: true                   # CI/CD: Automatically redeploy on each push
-    buildFilter:
-      paths:
-        - app.py                       # Only trigger build when these files change
-        - requirements.txt
-        - Dockerfile
-        - templates/**
-    preDeployCommand: "echo 'Running pre-deployment checks...'"
-    startCommand: "gunicorn app:app --bind 0.0.0.0:5000"
+name: Render CI/CD Pipeline
 
-    envVars:
-      - key: FLASK_ENV
-        value: production
-      - key: SECRET_KEY
-        sync: false                    # Keeps secrets hidden; set manually in Render Dashboard
-      - key: MODEL_PATH
-        value: /app/models/model.pkl   # Example of model path variable
+on:
+  push:
+    branches:
+      - main
+  pull_request:
 
-    previews:
-      generate: true                   # CI/CD: creates preview environment per PR
-      autoDeploy: true                 # Deploy PRs automatically for testing
+jobs:
+  deploy:
+    name: Deploy to Render
+    runs-on: ubuntu-latest
 
-    healthCheckPath: "/"               # Used by Render to verify service health
-    autoRestart: true                  # Restart automatically if it crashes
-    scaling:
-      minInstances: 1
-      maxInstances: 1
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests (if any)
+        run: |
+          echo "No tests defined"
+          # pytest  # uncomment if you have tests
+
+      - name: Deploy to Render
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
+        run: |
+          curl -X POST "https://api.render.com/v1/services/${SERVICE_ID}/deploys" \
+          -H "Accept: application/json" \
+          -H "Authorization: Bearer ${RENDER_API_KEY}" \
+          -d ''
