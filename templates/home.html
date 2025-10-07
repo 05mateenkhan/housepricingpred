@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>House Price Prediction</title>
+  <style>
+    /* --- Base Styling --- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: radial-gradient(circle at top left, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    /* --- Floating background animation --- */
+    .bg-animation {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0,255,200,0.15) 0%, transparent 70%);
+      animation: float 10s infinite ease-in-out alternate;
+      top: -100px;
+      right: -100px;
+      z-index: 0;
+      filter: blur(50px);
+    }
+
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(-80px, 60px) scale(1.3); }
+    }
+
+    /* --- Card Styling --- */
+    .container {
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 25px;
+      padding: 50px 60px;
+      max-width: 650px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.4);
+      animation: fadeIn 1.5s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      background: linear-gradient(90deg, #00d4ff, #90ff9f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p {
+      color: #ccc;
+      font-size: 1.15rem;
+      line-height: 1.6;
+      margin-bottom: 40px;
+    }
+
+    /* --- Button --- */
+    a {
+      display: inline-block;
+      text-decoration: none;
+      background: linear-gradient(90deg, #00c6ff, #0072ff);
+      color: #fff;
+      padding: 14px 35px;
+      font-weight: 600;
+      border-radius: 30px;
+      letter-spacing: 0.5px;
+      transition: 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    a:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 198, 255, 0.4);
+    }
+
+    /* --- Glow on hover --- */
+    a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(120deg, rgba(255,255,255,0.4), transparent);
+      transition: 0.5s;
+    }
+
+    a:hover::before {
+      left: 100%;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 20px;
+      font-size: 0.9rem;
+      color: #888;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-animation"></div>
+
+  <div class="container">
+    <h1>🏠 House Price Prediction</h1>
+    <p>Predict your dream home's price with cutting-edge Machine Learning technology.  
+    Enter property details and get instant predictions powered by AI — accurate, fast, and reliable.</p>
+    <a href="/predict">Get Started</a>
+  </div>
+
+  <footer>© 2025 House Price AI | Not Designed by <strong>AI </strong></footer>
+</body>
+</html>
