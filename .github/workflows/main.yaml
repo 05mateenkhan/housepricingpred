@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: flask-docker-cicd-app
+    env: docker
+    plan: free
+    region: singapore
+    autoDeploy: true                   # CI/CD: Automatically redeploy on each push
+    buildFilter:
+      paths:
+        - app.py                       # Only trigger build when these files change
+        - requirements.txt
+        - Dockerfile
+        - templates/**
+    preDeployCommand: "echo 'Running pre-deployment checks...'"
+    startCommand: "gunicorn app:app --bind 0.0.0.0:5000"
+
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: SECRET_KEY
+        sync: false                    # Keeps secrets hidden; set manually in Render Dashboard
+      - key: MODEL_PATH
+        value: /app/models/model.pkl   # Example of model path variable
+
+    previews:
+      generate: true                   # CI/CD: creates preview environment per PR
+      autoDeploy: true                 # Deploy PRs automatically for testing
+
+    healthCheckPath: "/"               # Used by Render to verify service health
+    autoRestart: true                  # Restart automatically if it crashes
+    scaling:
+      minInstances: 1
+      maxInstances: 1

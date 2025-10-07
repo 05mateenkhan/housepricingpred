@@ -4,6 +4,8 @@ import numpy as np
 import pandas as pd
 import os
 
+load_dotenv()
+
 app=Flask(__name__)
 ## load the model
 regmodel = pickle.load(open('regmodel.pkl','rb'))
